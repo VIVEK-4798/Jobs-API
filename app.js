@@ -6,8 +6,13 @@ const app = express();
 // connect DB
 const connectDB = require('./db/connect')
 
+app.use((req, res, next) => {
+  console.log(`Request received: ${req.method} ${req.url}`);
+  next();
+});
+
 // Routers
-const authRouter = require('./routes/auth')
+const authRouter = require('./routes/auth');
 const jobsRouter = require('./routes/jobs')
 
 // error handler
@@ -25,6 +30,7 @@ app.use(notFoundMiddleware);
 app.use(errorHandlerMiddleware);
 
 const port = process.env.PORT || 3000;
+
 
 const start = async () => {
   try {
