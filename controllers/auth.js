@@ -1,6 +1,7 @@
-const User = require('../models/User')
-const {StatusCodes} = require('http-status-codes')
-const jwt = require('jsonwebtoken')
+const User = require('../models/User');
+const {StatusCodes} = require('http-status-codes');
+const BadRequestError = require('../errors');
+const jwt = require('jsonwebtoken');
 
 const register = async (req, res) => {
 
@@ -10,7 +11,12 @@ const register = async (req, res) => {
 };
 
 const login = async (req, res) => {
-    res.send("Login user");
+    const {email, password} = req.body
+
+    if(!email || !pawword){
+        throw new BadRequestError('Please provide email and password')
+    }
+    const user = await User.findOne({email})
 };
 
 
