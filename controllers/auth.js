@@ -1,6 +1,6 @@
 const User = require('../models/User');
 const {StatusCodes} = require('http-status-codes');
-const BadRequestError = require('../errors');
+const {BadRequestError, UnauthenticatedError} = require('../errors');
 const jwt = require('jsonwebtoken');
 
 const register = async (req, res) => {
@@ -17,6 +17,12 @@ const login = async (req, res) => {
         throw new BadRequestError('Please provide email and password')
     }
     const user = await User.findOne({email})
+    // campare password
+    if(!user){
+        throw new UnauthenticatedError('Invalid Credentials')
+    }
+
+
 };
 
 
