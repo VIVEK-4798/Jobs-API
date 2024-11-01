@@ -13,15 +13,18 @@ const register = async (req, res) => {
 const login = async (req, res) => {
     const {email, password} = req.body
 
-    if(!email || !pawword){
+    if(!email || !password){
         throw new BadRequestError('Please provide email and password')
     }
+    const isPasswordCorrect = await user.comparePassword(password)
+
     const user = await User.findOne({email})
     // campare password
-    if(!user){
+    if(!isPasswordCorrect){
         throw new UnauthenticatedError('Invalid Credentials')
     }
-
+    const token = user.createJWT();
+    res.status(StatusCodes.OK).json({user:{name:user.name}, token})
 
 };
 
