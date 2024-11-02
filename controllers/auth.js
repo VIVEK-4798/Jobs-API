@@ -16,13 +16,17 @@ const login = async (req, res) => {
     if(!email || !password){
         throw new BadRequestError('Please provide email and password')
     }
+    const user = await User.findOne({email})
+    if(!user){
+        throw new UnauthenticatedError('Invalid Credentials')
+    }
+
     const isPasswordCorrect = await user.comparePassword(password)
 
-    const user = await User.findOne({email})
-    // campare password
     if(!isPasswordCorrect){
         throw new UnauthenticatedError('Invalid Credentials')
     }
+    // campare password
     const token = user.createJWT();
     res.status(StatusCodes.OK).json({user:{name:user.name}, token})
 

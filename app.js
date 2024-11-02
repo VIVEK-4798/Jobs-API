@@ -5,6 +5,7 @@ const app = express();
 
 // connect DB
 const connectDB = require('./db/connect')
+const authenticateUser = require('./middleware/authentication')
 
 app.use((req, res, next) => {
   console.log(`Request received: ${req.method} ${req.url}`);
@@ -24,7 +25,7 @@ app.use(express.json());
 
 // routes
 app.use('/api/v1/auth', authRouter)
-app.use('/api/v1/jobs', jobsRouter)
+app.use('/api/v1/jobs',authenticateUser ,jobsRouter)
 
 app.use(notFoundMiddleware);
 app.use(errorHandlerMiddleware);
