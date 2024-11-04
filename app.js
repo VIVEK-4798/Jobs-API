@@ -7,10 +7,6 @@ const app = express();
 const connectDB = require('./db/connect')
 const authenticateUser = require('./middleware/authentication')
 
-app.use((req, res, next) => {
-  console.log(`Request received: ${req.method} ${req.url}`);
-  next();
-});
 
 // Routers
 const authRouter = require('./routes/auth');
