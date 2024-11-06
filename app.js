@@ -10,6 +10,10 @@ const rateLimiter = require('express-rate-limit')
 const express = require('express');
 const app = express();
 
+app.get('/', (req, res) => {
+  res.send("Jobs-API")
+})
+
 // connect DB
 const connectDB = require('./db/connect')
 const authenticateUser = require('./middleware/authentication')
