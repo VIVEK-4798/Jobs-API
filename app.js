@@ -10,9 +10,9 @@ const rateLimiter = require('express-rate-limit')
 const express = require('express');
 const app = express();
 
-app.get('/', (req, res) => {
-  res.send("Jobs-API")
-})
+// app.get('/', (req, res) => {
+//   res.send("Jobs-API")
+// })
 
 // connect DB
 const connectDB = require('./db/connect')
@@ -35,7 +35,7 @@ app.use(
   })
 );
 
-
+app.use(express.static('./public'))
 app.use(express.json());
 app.use(rateLimiter)
 app.use(helmet())
