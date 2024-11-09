@@ -85,3 +85,12 @@ formDOM.addEventListener('submit', async (e) => {
     formAlertDOM.classList.remove('text-success')
   }, 3000)
 })
+
+const authToken = localStorage.getItem('authToken');
+
+if (!authToken) {
+  window.location.href = 'login.html'; // Redirect to login if not authenticated
+} else {
+  axios.defaults.headers.common['Authorization'] = `Bearer ${authToken}`;
+  showTasks(); // Load tasks if authenticated
+}

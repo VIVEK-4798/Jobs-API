@@ -42,6 +42,14 @@ app.use(helmet())
 app.use(cors())
 app.use(xss())
 
+// Serve login.html when visiting the root URL
+app.get('/', (req, res) => {
+  res.sendFile(path.resolve(__dirname, './public/login.html'));
+});
+
+// The rest of your code remains the same
+
+
 // routes
 app.use('/api/v1/auth', authRouter)
 app.use('/api/v1/jobs',authenticateUser ,jobsRouter)

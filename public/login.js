@@ -6,8 +6,8 @@ document.getElementById('login-form').addEventListener('submit', async (e) => {
     try {
       const response = await axios.post('/api/v1/auth/login', { username, password });
       const { token } = response.data;
-      localStorage.setItem('authToken', token); // Save token in localStorage
-      window.location.href = 'index.html'; // Redirect to the main page
+      localStorage.setItem('authToken', token); 
+      window.location.href = 'index.html'; 
     } catch (error) {
       console.error('Login failed', error);
     }

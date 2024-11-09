@@ -5,7 +5,7 @@ document.getElementById('register-form').addEventListener('submit', async (e) =>
   
     try {
       await axios.post('/api/v1/auth/register', { username, password });
-      window.location.href = 'login.html'; // Redirect to login page
+      window.location.href = 'login.html'; 
     } catch (error) {
       console.error('Registration failed', error);
     }
