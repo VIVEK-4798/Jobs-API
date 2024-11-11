@@ -54,4 +54,6 @@ const deleteJob = async (req, res) => {
 module.exports = {
     getAllJobs, getJob, createJob, updateJob, deleteJob
 }
-//eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NzI3ODUyOWEyNDQ0NTI1MDAwN2YyYTkiLCJuYW1lIjoicGV0ZXIiLCJpYXQiOjE3MzA2NDMyNDEsImV4cCI6MTczMzIzNTI0MX0.1iuQwTeW6uYqAeyCkc6-B-wCUyqRaYbm0juKX4RW0ZQ
+//eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NzI3ODUyOWE
+//yNDQ0NTI1MDAwN2YyYTkiLCJuYW1lIjoicGV0ZXIiLCJpYXQiOjE3MzA2NDMyNDE
+//sImV4cCI6MTczMzIzNTI0MX0.1iuQwTeW6uYqAeyCkc6-B-wCUyqRaYbm0juKX4RW0ZQ

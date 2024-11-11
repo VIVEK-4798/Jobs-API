@@ -6,6 +6,7 @@ const helmet = require('helmet')
 const cors = require('cors')
 const xss = require('xss-clean')
 const rateLimiter = require('express-rate-limit')
+const path = require('path'); // Make sure to import the 'path' module
 
 const express = require('express');
 const app = express();
@@ -35,7 +36,7 @@ app.use(
   })
 );
 
-app.use(express.static('./public'))
+app.use(express.static(path.join(__dirname, 'public')));
 app.use(express.json());
 app.use(rateLimiter)
 app.use(helmet())
