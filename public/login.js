@@ -6,26 +6,28 @@ document.getElementById('login-form').addEventListener('submit', async (event) =
   const errorMessage = document.getElementById('error-message');
 
   try {
-      const response = await fetch('/api/v1/auth/login', {
-          method: 'POST',
-          headers: {
-              'Content-Type': 'application/json'
-          },
-          body: JSON.stringify({ email, password })
-      });
+    const response = await fetch('/api/v1/auth/login', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ email, password })
+    });
 
-      const data = await response.json();
+    const data = await response.json();
+    console.log('Response:', data); // Debug response data
 
-      if (response.ok) {
-          // If login is successful, redirect to index.html
-          localStorage.setItem('token', data.token); // Store JWT in localStorage if needed
-          window.location.href = './index.html';
-      } else {
-          // If login fails, display an error message
-          errorMessage.textContent = data.error || 'Login failed. Please try again.';
-      }
-  } catch (error) {
-      console.error('Error:', error);
-      errorMessage.textContent = 'An error occurred. Please try again later.';
-  }
+    if (response.ok && data.token) {
+        localStorage.setItem('token', data.token); // Store JWT in localStorage
+        console.log('Redirecting to index.html');
+        window.location.href = './index.html'; // Redirect
+    } else {
+        console.log('Login failed:', data.error);
+        errorMessage.textContent = data.error || 'Login failed. Please try again.';
+    }
+} catch (error) {
+    console.error('Fetch error:', error);
+    errorMessage.textContent = 'An error occurred. Please try again later.';
+}
+
 });

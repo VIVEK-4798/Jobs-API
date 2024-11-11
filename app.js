@@ -38,7 +38,6 @@ app.use(
 
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(express.json());
-app.use(rateLimiter)
 app.use(helmet())
 app.use(cors())
 app.use(xss())
@@ -48,9 +47,6 @@ app.get('/', (req, res) => {
   res.sendFile(path.resolve(__dirname, './public/login.html'));
 });
 
-// The rest of your code remains the same
-
-
 // routes
 app.use('/api/v1/auth', authRouter)
 app.use('/api/v1/jobs',authenticateUser ,jobsRouter)
@@ -59,6 +55,12 @@ app.use(notFoundMiddleware);
 app.use(errorHandlerMiddleware);
 
 const port = process.env.PORT || 3000;
+
+app.use(cors({
+  origin: 'http://your-frontend-url.com', // Allow your frontend domain
+  methods: ['GET', 'POST'],
+  credentials: true
+}));
 
 
 const start = async () => {

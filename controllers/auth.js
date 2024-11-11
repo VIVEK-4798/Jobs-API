@@ -11,28 +11,33 @@ const register = async (req, res) => {
 };
 
 const login = async (req, res) => {
+    console.log("Login function called");
+
     const { email, password } = req.body;
 
     if (!email || !password) {
-        throw new BadRequestError('Please provide email and password');
+        console.log('Missing email or password');
+        return res.status(StatusCodes.BAD_REQUEST).json({ error: 'Please provide email and password' });
     }
 
-    // Find user by email
     const user = await User.findOne({ email });
     if (!user) {
+        console.log('User does not exist');
         return res.status(StatusCodes.UNAUTHORIZED).json({ error: 'User does not exist' });
     }
 
-    // Verify password
     const isPasswordCorrect = await user.comparePassword(password);
     if (!isPasswordCorrect) {
+        console.log('Invalid credentials');
         return res.status(StatusCodes.UNAUTHORIZED).json({ error: 'Invalid credentials' });
     }
 
-    // If user exists and password is correct, create and return token
+    // If successful login
     const token = user.createJWT();
+    console.log('Token created:', token); // Log token to verify
     res.status(StatusCodes.OK).json({ user: { name: user.name }, token });
 };
+
 
 module.exports = {
     register,
