@@ -5,7 +5,7 @@ const jobInputDOM = document.querySelector('.job-input');
 const formAlertDOM = document.querySelector('.form-alert');
 
 // Check for authentication and set the Authorization header if token is present
-const authToken = localStorage.getItem('authToken');
+const authToken = localStorage.getItem('token');
 
 if (!authToken) {
   console.log('No authToken found, redirecting to login page.');

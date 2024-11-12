@@ -56,12 +56,6 @@ app.use(errorHandlerMiddleware);
 
 const port = process.env.PORT || 3000;
 
-app.use(cors({
-  origin: 'http://your-frontend-url.com', // Allow your frontend domain
-  methods: ['GET', 'POST'],
-  credentials: true
-}));
-
 
 const start = async () => {
   try {

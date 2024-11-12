@@ -15,12 +15,11 @@ document.getElementById('login-form').addEventListener('submit', async (event) =
     });
 
     const data = await response.json();
-    console.log('Response:', data); // Debug response data
+    console.log('Response:', data); 
 
     if (response.ok && data.token) {
-        localStorage.setItem('token', data.token); // Store JWT in localStorage
-        console.log('Redirecting to index.html');
-        window.location.href = './index.html'; // Redirect
+        localStorage.setItem('token', data.token); 
+        window.location.href = './index.html'; 
     } else {
         console.log('Login failed:', data.error);
         errorMessage.textContent = data.error || 'Login failed. Please try again.';
