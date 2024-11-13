@@ -4,17 +4,38 @@ const formDOM = document.querySelector('.job-form');
 const jobInputDOM = document.querySelector('.job-input');
 const formAlertDOM = document.querySelector('.form-alert');
 
-// Check for authentication and set the Authorization header if token is present
-const authToken = localStorage.getItem('token');
+// Timeout duration (in milliseconds)
+const SESSION_TIMEOUT = 30 * 60 * 1000; // Example: 30 minutes
 
-if (!authToken) {
-  console.log('No authToken found, redirecting to login page.');
-  window.location.href = './login.html'; // Redirect to login if not authenticated
+// Function to check session timeout
+const isSessionExpired = () => {
+  const sessionStartTime = localStorage.getItem('sessionStartTime');
+  if (!sessionStartTime) return true;
+
+  const currentTime = new Date().getTime();
+  return currentTime - sessionStartTime > SESSION_TIMEOUT;
+};
+
+// Function to clear session
+const clearSession = () => {
+  localStorage.removeItem('token');
+  localStorage.removeItem('sessionStartTime');
+  console.log('Session expired. Redirecting to login page.');
+  window.location.href = './login.html'; // Redirect to login
+};
+
+// Check if user is authenticated and session is valid
+const authToken = localStorage.getItem('token');
+if (!authToken || isSessionExpired()) {
+  clearSession();
 } else {
-  console.log('Auth token found:', authToken);
+  // Update session start time on valid activity
+  localStorage.setItem('sessionStartTime', new Date().getTime());
+  console.log('Session valid. Proceeding...');
   axios.defaults.headers.common['Authorization'] = `Bearer ${authToken}`;
-  showJobs(); // Load jobs if authenticated
+  showJobs(); // Load jobs
 }
+
 
 // Function to load jobs from /api/v1/jobs
 const showJobs = async () => {

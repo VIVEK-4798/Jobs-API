@@ -22,24 +22,49 @@
       <h4>Job Track</h4>
       <div class="form-control">
         <div class="form-input-div">
-          <label>Company:</label>
-        <input
-          type="text"
-          name="name"
-          class="task-input"
-          placeholder="e.g. google"
-        />
+          <label>Company Name:</label>
+          <input
+            type="text"
+            name="company"
+            class="task-input"
+            placeholder="e.g. Google"
+          />
         </div>
         <div class="form-input-div">
-          <label>Postion:</label>
-        <input
-          type="text"
-          name="name"
-          class="task-input"
-          placeholder="e.g. intern"
-        />
+          <label>Position:</label>
+          <input
+            type="text"
+            name="position"
+            class="task-input"
+            placeholder="e.g. Intern"
+          />
         </div>
-        <button type="submit" class="btn submit-btn">submit</button>
+        <div class="form-input-div">
+          <label>Application Date:</label>
+          <input
+            type="date"
+            name="applicationDate"
+            class="task-input"
+          />
+        </div>
+        <div class="form-input-div">
+          <label>Application Status:</label>
+          <select name="status" class="task-input">
+            <option value="applied">Applied</option>
+            <option value="interviewed">Interviewed</option>
+            <option value="rejected">Rejected</option>
+            <option value="offer">Offer</option>
+          </select>
+        </div>
+        <div class="form-input-div">
+          <label>Follow-Up Details:</label>
+          <textarea
+            name="notes"
+            class="task-input"
+            placeholder="e.g. Follow-up email sent on 10th"
+          ></textarea>
+        </div>
+        <button type="submit" class="btn submit-btn">Submit</button>
       </div>
       <div class="form-alert"></div>
     </form>
