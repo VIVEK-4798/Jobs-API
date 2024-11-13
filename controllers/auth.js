@@ -4,11 +4,22 @@ const {BadRequestError, UnauthenticatedError} = require('../errors');
 const jwt = require('jsonwebtoken');
 
 const register = async (req, res) => {
-
-    const user = await User.create({...req.body})
-    const token = user.createJWT()
-    res.status(StatusCodes.CREATED).json({user:{name:user.name}, token});
-};
+    const { name, email, password } = req.body;
+  
+    // Check if the user already exists
+    const existingUser = await User.findOne({ email });
+  
+    if (existingUser) {
+      return res.status(StatusCodes.CONFLICT).json({ error: 'User already exists' });
+    }
+  
+    // Create a new user if none exists
+    const user = await User.create({ name, email, password });
+    const token = user.createJWT();
+  
+    res.status(StatusCodes.CREATED).json({ user: { name: user.name }, token });
+  };
+  
 
 const login = async (req, res) => {
     console.log("Login function called");
