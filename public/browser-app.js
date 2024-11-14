@@ -1,7 +1,11 @@
 const jobsDOM = document.querySelector('.tasks');
 const loadingDOM = document.querySelector('.loading-text');
-const formDOM = document.querySelector('.job-form');
-const jobInputDOM = document.querySelector('.job-input');
+const formDOM = document.querySelector('.task-form'); // Fix: Updated to match class "task-form"
+const companyInputDOM = document.querySelector('.job-input'); // For company name
+const positionInputDOM = document.querySelector('.task-input[name="position"]'); // For position
+const dateInputDOM = document.querySelector('.task-input[name="applicationDate"]'); // For applicationDate
+const statusInputDOM = document.querySelector('.task-input[name="status"]'); // For status
+const notesInputDOM = document.querySelector('.task-input[name="notes"]'); // For notes
 const formAlertDOM = document.querySelector('.form-alert');
 
 // Timeout duration (in milliseconds)
@@ -28,7 +32,7 @@ const clearSession = () => {
 const showJobs = async () => {
   console.log('Attempting to load jobs...');
   loadingDOM.style.visibility = 'visible';
-  
+
   try {
     const response = await axios.get('/api/v1/jobs');
     console.log('Jobs response:', response);
@@ -43,21 +47,26 @@ const showJobs = async () => {
     // Generate HTML for jobs
     const allJobs = jobs
       .map((job) => {
-        const { completed, _id: jobID, name } = job;
+        const { completed, _id: jobID, company, position, applicationDate, status, notes } = job;
         return `
-          <div class="single-job ${completed ? 'job-completed' : ''}">
-            <h5>${name}</h5>
-            <div class="job-links">
-              <!-- Edit Button -->
-              <a href="job.html?id=${jobID}" class="edit-link">
-                <i class="fas fa-edit"></i>
-              </a>
-              <!-- Delete Button -->
-              <button type="button" class="delete-btn" data-id="${jobID}">
-                <i class="fas fa-trash"></i>
-              </button>
-            </div>
-          </div>`;
+        <div class="single-job ${completed ? 'job-completed' : ''}">
+        <h5>${company}</h5>
+        <p><strong>Position:</strong> ${position}</p>
+        <p><strong>Application Date:</strong> ${applicationDate}</p>
+        <p><strong>Status:</strong> ${status}</p>
+        <p><strong>Notes:</strong> ${notes}</p>
+        <div class="job-links">
+          <!-- Edit Button -->
+          <a href="job.html?id=${jobID}" class="edit-link">
+            <i class="fas fa-edit"></i>
+          </a>
+          <!-- Delete Button -->
+          <button type="button" class="delete-btn" data-id="${jobID}">
+            <i class="fas fa-trash"></i>
+          </button>
+        </div>
+        <hr class="job-divider" />
+      </div>`;
       })
       .join('');
 
@@ -72,7 +81,6 @@ const showJobs = async () => {
   loadingDOM.style.visibility = 'hidden';
 };
 
-
 // Check if user is authenticated and session is valid
 const authToken = localStorage.getItem('token');
 if (!authToken || isSessionExpired()) {
@@ -84,9 +92,6 @@ if (!authToken || isSessionExpired()) {
   axios.defaults.headers.common['Authorization'] = `Bearer ${authToken}`;
   showJobs(); // Load jobs
 }
-
-
-
 
 // Event listener for deleting a job
 jobsDOM.addEventListener('click', async (e) => {
@@ -108,13 +113,23 @@ jobsDOM.addEventListener('click', async (e) => {
 // Event listener for form submission
 formDOM.addEventListener('submit', async (e) => {
   e.preventDefault();
-  const name = jobInputDOM.value;
-  console.log('Form submitted with job name:', name);
+
+  const company = companyInputDOM.value;
+  const position = positionInputDOM.value;
+  const applicationDate = dateInputDOM.value;
+  const status = statusInputDOM.value;
+  const notes = notesInputDOM.value;
+
+  console.log('Form submitted with job details:', { company, position, applicationDate, status, notes });
 
   try {
-    await axios.post('/api/v1/jobs', { name });
-    showJobs(); // Reload jobs after adding a new one
-    jobInputDOM.value = ''; // Clear input field
+    await axios.post('/api/v1/jobs', { company, position, applicationDate, status, notes });
+    showJobs(); 
+    companyInputDOM.value = ''; 
+    positionInputDOM.value = ''; 
+    dateInputDOM.value = ''; 
+    statusInputDOM.value = '';
+    notesInputDOM.value = ''; 
     formAlertDOM.style.display = 'block';
     formAlertDOM.textContent = `Success, job added!`;
     formAlertDOM.classList.add('text-success');

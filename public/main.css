@@ -241,6 +241,13 @@ textarea {
   margin-top: 4px;
   margin-top: 1rem; 
 }
+.job-divider {
+  border: 0;
+  height: 1px;
+  background: #ccc; 
+  margin: 10px 0;
+}
+
 @media screen and (min-width: 576px) {
   .form-control {
     display: flex;
