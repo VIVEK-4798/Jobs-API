@@ -8,31 +8,52 @@
     <link rel="shortcut icon" href="./favicon.ico" type="image/x-icon" />
     <!-- normalize -->
     <link rel="stylesheet" href="./normalize.css" />
-    <!-- main  -->
+    <!-- main -->
     <link rel="stylesheet" href="./main.css" />
 
-    <title>Edit Task</title>
+    <title>Edit Job</title>
   </head>
   <body>
     <div class="container">
       <form class="single-task-form">
-        <h4>Edit Task</h4>
+        <h4>Edit Job</h4>
         <div class="form-control">
-          <label>Task ID</label>
+          <label>Job ID</label>
           <p class="task-edit-id"></p>
         </div>
         <div class="form-control">
-          <label for="name">Name</label>
-          <input type="text" name="name" class="task-edit-name" />
+          <label for="company">Company Name</label>
+          <input type="text" name="company" class="task-edit-company" />
+        </div>
+        <div class="form-control">
+          <label for="position">Position</label>
+          <input type="text" name="position" class="task-edit-position" />
+        </div>
+        <div class="form-control">
+          <label for="applicationDate">Application Date</label>
+          <input type="date" name="applicationDate" class="task-edit-application-date" />
+        </div>
+        <div class="form-control">
+          <label for="applicationStatus">Application Status</label>
+          <select name="applicationStatus" class="task-edit-status">
+            <option value="Pending">Pending</option>
+            <option value="Interviewed">Interviewed</option>
+            <option value="Offered">Offered</option>
+            <option value="Rejected">Rejected</option>
+          </select>
+        </div>
+        <div class="form-control">
+          <label for="notes">Notes</label>
+          <textarea name="notes" class="task-edit-notes" rows="3"></textarea>
         </div>
         <div class="form-control">
           <label for="completed">completed</label>
           <input type="checkbox" name="completed" class="task-edit-completed" />
         </div>
-        <button type="submit" class="block btn task-edit-btn">edit</button>
+        <button type="submit" class="block btn task-edit-btn">Edit</button>
         <div class="form-alert"></div>
       </form>
-      <a href="index.html" class="btn back-link">back to tasks</a>
+      <a href="index.html" class="btn back-link">Back to Jobs</a>
     </div>
     <!-- axios -->
     <script

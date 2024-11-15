@@ -1,11 +1,11 @@
 const jobsDOM = document.querySelector('.tasks');
 const loadingDOM = document.querySelector('.loading-text');
-const formDOM = document.querySelector('.task-form'); // Fix: Updated to match class "task-form"
-const companyInputDOM = document.querySelector('.job-input'); // For company name
-const positionInputDOM = document.querySelector('.task-input[name="position"]'); // For position
-const dateInputDOM = document.querySelector('.task-input[name="applicationDate"]'); // For applicationDate
-const statusInputDOM = document.querySelector('.task-input[name="status"]'); // For status
-const notesInputDOM = document.querySelector('.task-input[name="notes"]'); // For notes
+const formDOM = document.querySelector('.task-form'); 
+const companyInputDOM = document.querySelector('.task-input[name="company"]');
+const positionInputDOM = document.querySelector('.task-input[name="position"]');
+const dateInputDOM = document.querySelector('.task-input[name="applicationDate"]');
+const statusInputDOM = document.querySelector('.task-input[name="status"]');
+const notesInputDOM = document.querySelector('.task-input[name="notes"]'); 
 const formAlertDOM = document.querySelector('.form-alert');
 
 // Timeout duration (in milliseconds)
@@ -44,15 +44,19 @@ const showJobs = async () => {
       return;
     }
 
-    // Generate HTML for jobs
     const allJobs = jobs
       .map((job) => {
         const { completed, _id: jobID, company, position, applicationDate, status, notes } = job;
+        const formattedDate = new Date(applicationDate).toLocaleDateString('en-US', {
+          year: 'numeric',
+          month: 'long',
+          day: 'numeric',
+        });
         return `
         <div class="single-job ${completed ? 'job-completed' : ''}">
         <h5>${company}</h5>
         <p><strong>Position:</strong> ${position}</p>
-        <p><strong>Application Date:</strong> ${applicationDate}</p>
+        <p><strong>Application Date:</strong> ${formattedDate}</p>
         <p><strong>Status:</strong> ${status}</p>
         <p><strong>Notes:</strong> ${notes}</p>
         <div class="job-links">
@@ -70,18 +74,15 @@ const showJobs = async () => {
       })
       .join('');
 
-    // Insert the jobs into the DOM
     jobsDOM.innerHTML = allJobs;
   } catch (error) {
-    console.error('Error fetching jobs:', error); // Log error details
+    console.error('Error fetching jobs:', error); 
     jobsDOM.innerHTML = '<h5 class="empty-list">There was an error, please try later....</h5>';
   }
 
-  // Hide loading spinner
   loadingDOM.style.visibility = 'hidden';
 };
 
-// Check if user is authenticated and session is valid
 const authToken = localStorage.getItem('token');
 if (!authToken || isSessionExpired()) {
   clearSession();
@@ -90,25 +91,33 @@ if (!authToken || isSessionExpired()) {
   localStorage.setItem('sessionStartTime', new Date().getTime());
   console.log('Session valid. Proceeding...');
   axios.defaults.headers.common['Authorization'] = `Bearer ${authToken}`;
-  showJobs(); // Load jobs
+  showJobs(); 
 }
 
 // Event listener for deleting a job
 jobsDOM.addEventListener('click', async (e) => {
   const el = e.target;
+
   if (el.parentElement.classList.contains('delete-btn')) {
     loadingDOM.style.visibility = 'visible';
-    const id = el.parentElement.dataset.id;
+    const id = el.parentElement.dataset.id; // Get the job ID
     console.log('Deleting job with ID:', id);
+
     try {
+      // Send DELETE request to the backend
       await axios.delete(`/api/v1/jobs/${id}`);
-      showJobs(); // Reload jobs after deletion
+      
+      // Refresh the job list after deletion
+      showJobs();
     } catch (error) {
       console.error('Error deleting job:', error);
     }
+
+    // Hide the loading spinner
     loadingDOM.style.visibility = 'hidden';
   }
 });
+
 
 // Event listener for form submission
 formDOM.addEventListener('submit', async (e) => {

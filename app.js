@@ -11,9 +11,10 @@ const path = require('path'); // Make sure to import the 'path' module
 const express = require('express');
 const app = express();
 
-// app.get('/', (req, res) => {
-//   res.send("Jobs-API")
-// })
+
+app.get("/job.html", (req, res) => {
+  res.sendFile(path.join(__dirname, "public", "task.html"));
+});
 
 // connect DB
 const connectDB = require('./db/connect')
