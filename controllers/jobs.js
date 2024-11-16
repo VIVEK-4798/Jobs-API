@@ -25,30 +25,31 @@ const createJob = async (req, res) => {
 }
 
 const updateJob = async (req, res) => {
-    const {
-      body: { companyName, position, applicationStatus, applicationDate, notes },
-      user: { userId },
-      params: { id: jobId },
-    } = req;
-  
-    if (!companyName || !position || !applicationStatus || !applicationDate) {
-      throw new BadRequestError(
-        'Company Name, Position, Application Status, and Application Date fields cannot be empty'
-      );
-    }
-  
-    const job = await Job.findOneAndUpdate(
-      { _id: jobId, createdBy: userId },
-      { companyName, position, applicationStatus, applicationDate, notes },
-      { new: true, runValidators: true }
+  const {
+    body: { companyName, position, applicationStatus, applicationDate, notes },
+    user: { userId },
+    params: { id: jobId },
+  } = req;
+
+  if (!companyName || !position || !applicationStatus || !applicationDate) {
+    throw new BadRequestError(
+      "Company Name, Position, Application Status, and Application Date fields cannot be empty"
     );
-  
-    if (!job) {
-      throw new NotFoundError(`No job found with job ID ${jobId}`);
-    }
-  
-    res.status(StatusCodes.OK).json({ job });
-  };
+  }
+
+  const job = await Job.findOneAndUpdate(
+    { _id: jobId, createdBy: userId },
+    { companyName, position, applicationStatus, applicationDate, notes },
+    { new: true, runValidators: true }
+  );
+
+  if (!job) {
+    throw new NotFoundError(`No job found with job ID ${jobId}`);
+  }
+
+  res.status(StatusCodes.OK).json({ job });
+};
+
   
 
 const deleteJob = async (req, res) => {

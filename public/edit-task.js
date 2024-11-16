@@ -5,13 +5,15 @@ const editFormDOM = document.querySelector('.single-task-form');
 const editBtnDOM = document.querySelector('.task-edit-btn');
 const formAlertDOM = document.querySelector('.form-alert');
 const taskIDElement = document.querySelector(".task-edit-id");
-const companyInput = document.querySelector(".task-edit-company");
-const positionInput = document.querySelector(".task-edit-position");
-const dateInput = document.querySelector(".task-edit-application-date");
-const statusSelect = document.querySelector(".task-edit-status");
-const notesTextarea = document.querySelector(".task-edit-notes");
+const companyInput = document.querySelector('.task-edit-company');
+const positionInput = document.querySelector('.task-edit-position');
+const dateInput = document.querySelector('.task-edit-application-date');
+const statusSelect = document.querySelector('.task-edit-status');
+const notesTextarea = document.querySelector('.task-edit-notes');
+const completedCheckbox = document.querySelector('.task-edit-completed');
 const form = document.querySelector(".single-task-form");
 const alert = document.querySelector(".form-alert");
+const token = localStorage.getItem('token'); // Ensure token is stored
 
 const params = new URLSearchParams(window.location.search);
 const jobId = params.get("id");
@@ -19,37 +21,56 @@ const jobId = params.get("id");
 // Fetch job details and populate the form
 const fetchJobDetails = async () => {
   try {
-    const { data } = await axios.get(`/api/v1/jobs/${jobId}`);
+    const { data } = await axios.get(`/api/v1/jobs/${jobId}`, {
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem("token")}`,
+      },
+    });
+    console.log(companyInput, positionInput, dateInput, statusSelect, notesTextarea, completedCheckbox);
+
     const { company, position, applicationDate, status, notes } = data.job;
 
-    console.log(data);
+    console.log(data); // Debugging: Log fetched data
 
+    // Set the values for input fields (not placeholders)
+    companyInput.value = company || "";
+    positionInput.value = position || "";
+    dateInput.value = applicationDate ? applicationDate.slice(0, 10) : "";
+    statusSelect.value = status || "";
+    notesTextarea.value = notes || "";
     taskIDElement.textContent = jobId;
-    companyInput.value = company;
-    positionInput.value = position;
-    dateInput.value = applicationDate ? applicationDate.slice(0, 10) : ""; // Format date
-    statusSelect.value = status;
-    notesTextarea.value = notes;
+
+    alert.style.display = "none"; // Hide error if data loads correctly
   } catch (error) {
     console.error(error);
-    alert.textContent = "Error fetching job details.";
+    alert.textContent = "Failed to load task details. Please try again.";
     alert.style.display = "block";
   }
 };
 
+document.addEventListener("DOMContentLoaded", fetchJobDetails);
+
 // Handle form submission
 form.addEventListener("submit", async (e) => {
   e.preventDefault();
-  try {
-    const updatedJob = {
-      company: companyInput.value,
-      position: positionInput.value,
-      applicationDate: dateInput.value,
-      status: statusSelect.value,
-      notes: notesTextarea.value,
-    };
 
-    await axios.patch(`/api/v1/jobs/${jobId}`, updatedJob);
+  const updatedJob = {
+    companyName: companyInput?.value || '',
+    position: positionInput?.value || '',
+    applicationDate: dateInput?.value || '',
+    applicationStatus: statusSelect?.value || '',
+    notes: notesTextarea?.value || '',
+    completed: completedCheckbox?.checked || false,
+  };
+  console.log('Updated Job Payload:', updatedJob);
+  
+
+  try {
+    await axios.patch(`/api/v1/jobs/${jobId}`, updatedJob, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
     alert.textContent = "Job updated successfully!";
     alert.style.color = "green";
     alert.style.display = "block";
@@ -60,6 +81,7 @@ form.addEventListener("submit", async (e) => {
     alert.style.display = "block";
   }
 });
+
 
 fetchJobDetails();
 
