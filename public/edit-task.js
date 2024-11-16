@@ -48,7 +48,6 @@ const fetchJobDetails = async () => {
   }
 };
 
-document.addEventListener("DOMContentLoaded", fetchJobDetails);
 
 // Handle form submission
 form.addEventListener("submit", async (e) => {
@@ -58,10 +57,11 @@ form.addEventListener("submit", async (e) => {
     companyName: companyInput?.value || '',
     position: positionInput?.value || '',
     applicationDate: dateInput?.value || '',
-    applicationStatus: statusSelect?.value || '',
+    applicationStatus: statusSelect?.value || '', 
     notes: notesTextarea?.value || '',
     completed: completedCheckbox?.checked || false,
   };
+  
   console.log('Updated Job Payload:', updatedJob);
   
 
