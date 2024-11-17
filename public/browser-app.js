@@ -83,6 +83,50 @@ const showJobs = async () => {
   loadingDOM.style.visibility = 'hidden';
 };
 
+const fetchJobs = async () => {
+  loadingDOM.style.display = 'block';
+  try {
+    const { data: { jobs } } = await axios.get('/api/v1/jobs');
+    if (jobs.length < 1) {
+      jobsDOM.innerHTML = '<h5 class="empty-list">No jobs to display</h5>';
+      loadingDOM.style.display = 'none';
+      return;
+    }
+
+    const allJobs = jobs
+      .map(job => {
+        const { _id, company, completed } = job;
+        return `
+          <div class="single-task">
+            <h5 class="job-company ${completed ? 'completed' : ''}">
+              ${company}
+            </h5>
+            <div class="task-links">
+              <!-- Edit link -->
+              <a href="edit-task.html?id=${_id}" class="edit-link">
+                <i class="fas fa-edit"></i>
+              </a>
+              <!-- Delete button -->
+              <button type="button" class="delete-btn" data-id="${_id}">
+                <i class="fas fa-trash"></i>
+              </button>
+            </div>
+          </div>
+        `;
+      })
+      .join('');
+
+    jobsDOM.innerHTML = allJobs;
+  } catch (error) {
+    console.error(error);
+    jobsDOM.innerHTML = '<h5 class="empty-list">Error loading jobs</h5>';
+  }
+  loadingDOM.style.display = 'none';
+};
+
+// Load jobs on page load
+fetchJobs();
+
 const authToken = localStorage.getItem('token');
 if (!authToken || isSessionExpired()) {
   clearSession();

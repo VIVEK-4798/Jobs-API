@@ -27,6 +27,7 @@ const fetchJobDetails = async () => {
       },
     });
     console.log(companyInput, positionInput, dateInput, statusSelect, notesTextarea, completedCheckbox);
+    console.log(localStorage.getItem("token"));
 
     const { company, position, applicationDate, status, notes } = data.job;
 
