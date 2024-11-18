@@ -33,7 +33,7 @@ const updateJob = async (req, res) => {
 
   if (!companyName || !position || !applicationStatus || !applicationDate) {
     throw new BadRequestError(
-      "Company Name, Position, Application Status, and Application Date fields cannot be empty"
+      "Company Name, Position, Status, and Date fields are required."
     );
   }
 
@@ -44,11 +44,12 @@ const updateJob = async (req, res) => {
   );
 
   if (!job) {
-    throw new NotFoundError(`No job found with job ID ${jobId}`);
+    throw new NotFoundError(`Job with ID ${jobId} not found.`);
   }
 
   res.status(StatusCodes.OK).json({ job });
 };
+
 
   
 

@@ -20,13 +20,14 @@ const isSessionExpired = () => {
   return currentTime - sessionStartTime > SESSION_TIMEOUT;
 };
 
-// Function to clear session
-const clearSession = () => {
-  localStorage.removeItem('token');
-  localStorage.removeItem('sessionStartTime');
-  console.log('Session expired. Redirecting to login page.');
-  window.location.href = './login.html'; // Redirect to login
-};
+  // Logout button logic
+  document.getElementById('logout-btn').addEventListener('click', () => {
+    console.log('Logging out...');
+    localStorage.removeItem('token');
+    localStorage.removeItem('sessionStartTime');
+    window.location.href = './login.html'; // Redirect to login page
+  });
+  
 
 // Function to load jobs from /api/v1/jobs
 const showJobs = async () => {
