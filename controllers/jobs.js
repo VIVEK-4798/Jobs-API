@@ -51,8 +51,6 @@ const updateJob = async (req, res) => {
 };
 
 
-  
-
 const deleteJob = async (req, res) => {
     const {user:{userId}, params:{id:jobId}} = req
 

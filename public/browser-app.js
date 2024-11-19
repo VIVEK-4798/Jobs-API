@@ -8,8 +8,7 @@ const statusInputDOM = document.querySelector('.task-input[name="status"]');
 const notesInputDOM = document.querySelector('.task-input[name="notes"]'); 
 const formAlertDOM = document.querySelector('.form-alert');
 
-// Timeout duration (in milliseconds)
-const SESSION_TIMEOUT = 30 * 60 * 1000; // Example: 30 minutes
+const SESSION_TIMEOUT = 30 * 60 * 1000; 
 
 // Function to check session timeout
 const isSessionExpired = () => {
@@ -149,16 +148,13 @@ jobsDOM.addEventListener('click', async (e) => {
     console.log('Deleting job with ID:', id);
 
     try {
-      // Send DELETE request to the backend
       await axios.delete(`/api/v1/jobs/${id}`);
-      
-      // Refresh the job list after deletion
+
       showJobs();
     } catch (error) {
       console.error('Error deleting job:', error);
     }
 
-    // Hide the loading spinner
     loadingDOM.style.visibility = 'hidden';
   }
 });

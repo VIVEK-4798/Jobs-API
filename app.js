@@ -6,7 +6,7 @@ const helmet = require('helmet')
 const cors = require('cors')
 const xss = require('xss-clean')
 const rateLimiter = require('express-rate-limit')
-const path = require('path'); // Make sure to import the 'path' module
+const path = require('path'); 
 
 const express = require('express');
 const app = express();
@@ -37,16 +37,16 @@ app.use(
   })
 );
 
+// Serve login.html when visiting the root URL
+app.get('/', (req, res) => {
+  res.sendFile(path.resolve(__dirname, './public/login.html'));
+});
+
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(express.json());
 app.use(helmet())
 app.use(cors())
 app.use(xss())
-
-// Serve login.html when visiting the root URL
-app.get('/', (req, res) => {
-  res.sendFile(path.resolve(__dirname, './public/login.html'));
-});
 
 // routes
 app.use('/api/v1/auth', authRouter)

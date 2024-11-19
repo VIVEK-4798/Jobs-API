@@ -7,7 +7,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const notesTextarea = document.querySelector(".task-edit-notes");
   const form = document.querySelector(".single-task-form");
   const alert = document.querySelector(".form-alert");
-  const token = localStorage.getItem("token"); // Ensure the token is saved in localStorage
+  const token = localStorage.getItem("token");
 
   const params = new URLSearchParams(window.location.search);
   const jobId = params.get("id");
@@ -26,7 +26,6 @@ document.addEventListener("DOMContentLoaded", () => {
       dateInput.value = applicationDate ? applicationDate.slice(0, 10) : "";
       statusSelect.value = applicationStatus || "Pending";
       notesTextarea.value = notes || "";
-      // taskIDElement.textContent = jobId;
     } catch (error) {
       console.error("Error fetching job details:", error);
       alert.textContent = "Failed to load job details. Please check your authentication.";
